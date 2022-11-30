@@ -14,66 +14,41 @@
   </nav>
   <h1 class="glow">BucketL!st</h1>
 
-  
   <body>
-
-    <form action="http://localhost:8080/upload"
-    enctype="multipart/form-data" method="post" >
-
+    <form
+      action="http://localhost:8080/upload"
+      enctype="multipart/form-data"
+      method="post"
+    >
       <input class="uno" type="file" name="myFile" />
-      <input type="submit" value="Upload File...">
+      <input type="submit" value="Upload File..." />
+    </form>
 
-  </form>
-   
-    <div class="posts">
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-      <img class="post" src="./img.jpg" alt="" />
-    </div>
+    <div id="postDiv" class="posts"></div>
   </body>
 </html>
+
+<script>
+  async function FetchPosts() {
+    const response = await fetch("http://localhost:8080/posts", {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    });
+
+    const allpics = await response.json();
+    var postsSection = document.getElementById("postDiv");
+    if (allpics.length > 0) {
+      allpics.forEach((pic) => {
+        postsSection.innerHTML += `<img class="post" src="../Server/temp/${pic}" alt="" />`;
+      });
+    }
+  }
+  FetchPosts();
+</script>
