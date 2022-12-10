@@ -1,0 +1,64 @@
+<html lang="en"><head>
+    <title>BucketL!st</title>
+  <link rel="stylesheet" href="style.css"></head>
+  
+
+  <body><nav>
+    <ul>
+      <li><a href="Home">Home</a></li>
+      <li><a href="Blog">Blog</a></li>
+      <li><a href="Contact">Contact</a></li>
+    </ul>
+  </nav>
+  <h1 class="glow">BucketL!st</h1>
+
+  
+    <form>
+      <input class="uno" type="file" id="zefile" name="myFile">
+    </form>
+    <button onclick="tumaFile()">Tuma The file</button>
+    <div id="postDiv" class="posts"><img class="post" src="../Server/temp/upload-1066639242.jpg" alt=""><img class="post" src="../Server/temp/upload-1140403172.jpg" alt=""><img class="post" src="../Server/temp/upload-1144047230.jpg" alt=""><img class="post" src="../Server/temp/upload-117235564.jpg" alt=""><img class="post" src="../Server/temp/upload-1231664415.jpg" alt=""><img class="post" src="../Server/temp/upload-1350488503.jpg" alt=""><img class="post" src="../Server/temp/upload-1388426152.jpg" alt=""><img class="post" src="../Server/temp/upload-1422741462.jpg" alt=""><img class="post" src="../Server/temp/upload-1544758050.jpg" alt=""><img class="post" src="../Server/temp/upload-1564005458.jpg" alt=""><img class="post" src="../Server/temp/upload-1568669128.jpg" alt=""><img class="post" src="../Server/temp/upload-1650468125.jpg" alt=""><img class="post" src="../Server/temp/upload-1669262941.jpg" alt=""><img class="post" src="../Server/temp/upload-1745100319.jpg" alt=""><img class="post" src="../Server/temp/upload-1772184490.jpg" alt=""><img class="post" src="../Server/temp/upload-1819104973.jpg" alt=""><img class="post" src="../Server/temp/upload-1850103450.jpg" alt=""><img class="post" src="../Server/temp/upload-1887730687.jpg" alt=""><img class="post" src="../Server/temp/upload-1991540222.jpg" alt=""><img class="post" src="../Server/temp/upload-2035284081.jpg" alt=""><img class="post" src="../Server/temp/upload-2037178072.jpg" alt=""><img class="post" src="../Server/temp/upload-2043137977.jpg" alt=""><img class="post" src="../Server/temp/upload-208448432.jpg" alt=""><img class="post" src="../Server/temp/upload-2099004648.jpg" alt=""><img class="post" src="../Server/temp/upload-2244191033.jpg" alt=""><img class="post" src="../Server/temp/upload-2271161632.jpg" alt=""><img class="post" src="../Server/temp/upload-2376700192.jpg" alt=""><img class="post" src="../Server/temp/upload-238602442.jpg" alt=""><img class="post" src="../Server/temp/upload-2490174495.jpg" alt=""><img class="post" src="../Server/temp/upload-2490418112.jpg" alt=""><img class="post" src="../Server/temp/upload-2579887803.jpg" alt=""><img class="post" src="../Server/temp/upload-2619425554.jpg" alt=""><img class="post" src="../Server/temp/upload-2622485280.jpg" alt=""><img class="post" src="../Server/temp/upload-2730682373.jpg" alt=""><img class="post" src="../Server/temp/upload-2851945314.jpg" alt=""><img class="post" src="../Server/temp/upload-2887123163.jpg" alt=""><img class="post" src="../Server/temp/upload-3007364272.jpg" alt=""><img class="post" src="../Server/temp/upload-3007447065.jpg" alt=""><img class="post" src="../Server/temp/upload-3018205951.jpg" alt=""><img class="post" src="../Server/temp/upload-3018356596.jpg" alt=""><img class="post" src="../Server/temp/upload-3421708529.jpg" alt=""><img class="post" src="../Server/temp/upload-343906918.jpg" alt=""><img class="post" src="../Server/temp/upload-3513646991.jpg" alt=""><img class="post" src="../Server/temp/upload-3613035845.jpg" alt=""><img class="post" src="../Server/temp/upload-3669824008.jpg" alt=""><img class="post" src="../Server/temp/upload-3739693681.jpg" alt=""><img class="post" src="../Server/temp/upload-3767276219.jpg" alt=""><img class="post" src="../Server/temp/upload-38923783.jpg" alt=""><img class="post" src="../Server/temp/upload-3996951340.jpg" alt=""><img class="post" src="../Server/temp/upload-4112296978.jpg" alt=""><img class="post" src="../Server/temp/upload-4156718132.jpg" alt=""><img class="post" src="../Server/temp/upload-4210108505.jpg" alt=""><img class="post" src="../Server/temp/upload-444505362.jpg" alt=""><img class="post" src="../Server/temp/upload-459503101.jpg" alt=""><img class="post" src="../Server/temp/upload-509742121.jpg" alt=""><img class="post" src="../Server/temp/upload-71036243.jpg" alt=""><img class="post" src="../Server/temp/upload-733629708.jpg" alt=""><img class="post" src="../Server/temp/upload-786841177.jpg" alt=""><img class="post" src="../Server/temp/upload-854217767.jpg" alt=""><img class="post" src="../Server/temp/upload-859322442.jpg" alt=""></div>
+  
+
+
+<script>
+  async function tumaFile() {
+    let photo = document.getElementById("zefile").files[0];
+    let formData = new FormData();
+
+    formData.append("myFile", photo);
+    let resp = await fetch("./upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    FetchPosts();
+  }
+
+  FetchPosts();
+
+  async function FetchPosts() {
+    const response = await fetch("./posts", {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    });
+
+    const allpics = await response.json();
+    var postsSection = document.getElementById("postDiv");
+    if (allpics.length > 0) {
+      postsSection.innerHTML = "";
+      allpics.forEach((pic) => {
+        postsSection.innerHTML += `<img class="post" src="./img/${pic}" alt="" />`;
+      });
+    }
+  }
+</script>
+</body>
+</html>

@@ -75,11 +75,37 @@ func FetchPosts(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
+func ServeHomePage(w http.ResponseWriter, r *http.Request) {
+	files, err := ioutil.ReadDir("./homepage")
+	if err != nil {
+		fmt.Fprintln(w, "Failed to fetch posts", err)
+		return
+	}
+
+	var posts = make([]string, len(files))
+	for i, f := range files {
+		posts[i] = f.Name()
+	}
+	body, err := json.Marshal(posts)
+	if err != nil {
+		fmt.Fprintln(w, err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(body)
+}
+
 func setupRoutes() {
 	mux := http.NewServeMux()
-	port := ":8080"
-	mux.HandleFunc("/upload", uploadFile)
+	port := ":8091"
+
+	homepageHandler := http.FileServer(http.Dir("./homepage"))
+	mux.Handle("/", homepageHandler)
+
+	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./temp"))))
+
 	mux.HandleFunc("/posts", FetchPosts)
+	mux.HandleFunc("/upload", uploadFile)
 	handler := cors.Default().Handler(mux)
 	fmt.Printf("I'm running at http://localhost%s\n", port)
 	http.ListenAndServe(port, handler)
